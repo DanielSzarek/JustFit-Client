@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, password=None):
+    def create_user(self, email, username, first_name, last_name, phone_number, password=None):
         if not email:
             raise ValueError("Nie podano adresu email")
         if not username:
@@ -12,24 +12,28 @@ class MyAccountManager(BaseUserManager):
             raise ValueError("Nie podano imienia")
         if not last_name:
             raise ValueError("Nie podano nazwiska")
+        if not phone_number:
+            raise ValueError("Nie podano numeru telefonu")
 
         user = self.model(
             email=self.normalize_email(email),
             username=username,
             first_name=first_name,
             last_name=last_name,
+            phone_number=phone_number,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def crete_superuser(self, email, username, first_name, last_name, password):
+    def crete_superuser(self, email, username, first_name, last_name, phone_number, password):
         user = self.create_user(
             self.normalize_email(email),
             username,
             first_name,
             last_name,
+            phone_number,
             password
         )
         user.is_admin = True
@@ -51,11 +55,13 @@ class Account(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     # additional fields
+    # TODO ask, if that's enough
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=20)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', ]
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number']
 
     # object set the menager
     object = MyAccountManager
