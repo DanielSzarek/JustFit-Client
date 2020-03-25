@@ -22,4 +22,4 @@ class ClientExercise(models.Model):
     mod_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Product: {self.id_exercise} of user: {self.user}"
+        return f"Exercise: {self.id_exercise} of user: {self.user}"

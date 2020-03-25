@@ -27,7 +27,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def crete_superuser(self, email, username, first_name, last_name, phone_number, password):
+    def create_superuser(self, email, username, first_name, last_name, phone_number, password):
         user = self.create_user(
             self.normalize_email(email),
             username,
@@ -64,14 +64,16 @@ class Account(AbstractBaseUser):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number']
 
     # object set the menager
-    object = MyAccountManager
+    objects = MyAccountManager()
 
     def __str__(self):
         return self.email
 
-    # required methods for AbstractUser
+    # admin permissions
     def has_perm(self, perm, obj=None):
         return self.is_admin
 
-    def has_module_perms(self, app_label):
+    @staticmethod
+    # user permissions
+    def has_module_perms(app_label):
         return True
