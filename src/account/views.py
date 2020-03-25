@@ -14,6 +14,11 @@ from .serializers import AccountSerializer
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication])
 def user_properties_view(request):
+    """
+    This view will be used by our clients to get their accounts
+    :param request:
+    :return:
+    """
     try:
         account = request.user
     except Account.DoesNotExist:
@@ -35,6 +40,12 @@ def user_properties_view(request):
 @permission_classes([IsAdminUser])
 @authentication_classes([BasicAuthentication])
 def account_retrieve_view(request, pk):
+    """
+    This view will be used by admins to retrieve and change data
+    :param request:
+    :param pk:
+    :return:
+    """
     try:
         account = Account.objects.get(pk=pk)
     except Account.DoesNotExist:
@@ -53,6 +64,9 @@ def account_retrieve_view(request, pk):
 
 
 class AccountListView(ListAPIView):
+    """
+    This view will be used by admins to find and filter clients.
+    """
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     authentication_classes(BasicAuthentication,)
