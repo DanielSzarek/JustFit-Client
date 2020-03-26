@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # my aps
+    # my apps
     'account',
     'api',
 
@@ -80,6 +80,10 @@ AUTH_USER_MODEL = 'account.Account'
 
 WSGI_APPLICATION = 'just_fit.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
