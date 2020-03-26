@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Account
 from .serializers import AccountSerializer
@@ -17,7 +18,7 @@ def user_properties_view(request):
     """
     This view will be used by our clients to get their accounts
     :param request:
-    :return:
+    :return Response:
     """
     try:
         account = request.user
@@ -29,6 +30,8 @@ def user_properties_view(request):
         return Response(serializer.data)
 
     if request.method == 'PUT':
+        # Probably we will not need a PUT method for our small project
+        # Lets keep it for now, maybe our frontend guys will be able to add it also
         serializer = AccountSerializer(account, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -44,7 +47,7 @@ def account_retrieve_view(request, pk):
     This view will be used by admins to retrieve and change data
     :param request:
     :param pk:
-    :return:
+    :return Response:
     """
     try:
         account = Account.objects.get(pk=pk)
@@ -72,4 +75,5 @@ class AccountListView(ListAPIView):
     authentication_classes(BasicAuthentication,)
     permission_classes = (IsAdminUser,)
     filter_backends = (SearchFilter, OrderingFilter)
+    pagination_class = PageNumberPagination
     search_fields = ('email', 'username', 'first_name', 'last_name')

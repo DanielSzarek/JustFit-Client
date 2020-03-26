@@ -8,7 +8,7 @@ from .views import (
 app_name = 'account'
 
 urlpatterns = [
-    path('properties', user_properties_view, name='properties'),
+    path('client/properties/', user_properties_view, name='properties'),
     path('properties/<int:pk>', account_retrieve_view, name="account"),
-    path('accounts', AccountListView.as_view(), name="accounts"),
+    path('search/', AccountListView.as_view(), name="accounts"),
 ]
