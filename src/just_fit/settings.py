@@ -25,7 +25,7 @@ SECRET_KEY = 'b3=(=o#e_gu^vsvm-d)a1ll^b=%gm59$vbo^ke0tr#6p1g!e*c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
 # Application definition
@@ -44,9 +44,12 @@ INSTALLED_APPS = [
     
     # Additional
     'rest_framework',
+    'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
