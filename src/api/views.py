@@ -16,6 +16,12 @@ ACCOUNT = settings.AUTH_USER_MODEL
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication])
 def client_product_view(request):
+    """
+    This methods are responsible for merging clients with products from other API
+
+    :param request:
+    :return:
+    """
     try:
         account = request.user
     except ACCOUNT.DoesNotExist:
@@ -29,7 +35,7 @@ def client_product_view(request):
 
     if request.method == 'POST':
         data = request.data
-        # We check if someone from staff giving a product
+        # We check if someone from staff is using that method
         if data['user'] is None and not request.user.is_staff and not request.user.is_superuser:
             data['user'] = account.pk
         serializer = ClientProductSerializer(data=data)
@@ -48,6 +54,12 @@ def client_product_view(request):
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication])
 def client_exercise_view(request):
+    """
+    This methods are responsible for merging clients with exercises from other API
+
+    :param request:
+    :return:
+    """
     try:
         account = request.user
     except ACCOUNT.DoesNotExist:
@@ -61,7 +73,7 @@ def client_exercise_view(request):
 
     if request.method == 'POST':
         data = request.data
-        # We check if someone from staff giving a product
+        # We check if someone from staff is using that method
         if not request.user.is_staff and not request.user.is_superuser:
             data['user'] = account.pk
 
