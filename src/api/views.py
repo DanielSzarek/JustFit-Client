@@ -17,7 +17,7 @@ ACCOUNT = settings.AUTH_USER_MODEL
 @authentication_classes([BasicAuthentication])
 def client_product_view(request):
     """
-    This methods are responsible for merging clients with products from other API
+    These methods are responsible for merging clients with products from other API
 
     :param request:
     :return:
@@ -55,7 +55,7 @@ def client_product_view(request):
 @authentication_classes([BasicAuthentication])
 def client_exercise_view(request):
     """
-    This methods are responsible for merging clients with exercises from other API
+    These methods are responsible for merging clients with exercises from other API
 
     :param request:
     :return:

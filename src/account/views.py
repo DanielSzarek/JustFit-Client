@@ -17,6 +17,7 @@ from .serializers import AccountSerializer
 def user_properties_view(request):
     """
     This view will be used by our clients to get their accounts
+
     :param request:
     :return Response:
     """
@@ -45,6 +46,7 @@ def user_properties_view(request):
 def account_retrieve_view(request, pk):
     """
     This view will be used by admins to retrieve and change data
+
     :param request:
     :param pk:
     :return Response:
@@ -69,6 +71,8 @@ def account_retrieve_view(request, pk):
 class AccountListView(ListAPIView):
     """
     This view will be used by admins to find and filter clients.
+
+    :return Response:
     """
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
