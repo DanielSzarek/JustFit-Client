@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 
@@ -11,9 +11,25 @@ from .models import Account
 from .serializers import AccountSerializer
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def token_delete(request):
+    """
+    Use this view to simply logout user and destroy his token
+
+    :param request:
+    :return:
+    """
+    # I had to add a token for authorization
+    # Tt will help in connection between client frontend and events frontend and be more secure as well
+    request.user.auth_token.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([BasicAuthentication])
+@authentication_classes([BasicAuthentication, TokenAuthentication])
 def user_properties_view(request):
     """
     This view will be used by our clients to get their accounts
