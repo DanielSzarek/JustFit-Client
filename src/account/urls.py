@@ -4,6 +4,7 @@ from .views import (
     user_properties_view,
     account_retrieve_view,
     AccountListView,
+    accounts_retrieve_by_ids,
 )
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -16,4 +17,5 @@ urlpatterns = [
     path('client/properties/', user_properties_view, name='properties'),
     path('properties/<int:pk>', account_retrieve_view, name="account"),
     path('search/', AccountListView.as_view(), name="accounts"),
+    path('clients/', accounts_retrieve_by_ids, name="accounts")
 ]

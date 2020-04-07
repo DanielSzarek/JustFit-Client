@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Account
-from .serializers import AccountSerializer
+from .serializers import AccountSerializer, AccountNameSerializer
 
 
 @api_view(['POST'])
@@ -82,6 +82,33 @@ def account_retrieve_view(request, pk):
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([BasicAuthentication, TokenAuthentication])
+def accounts_retrieve_by_ids(request):
+    """
+    This endpoint will retrieve all user names by ids
+
+    :param request:
+    :return:
+    """
+    if request.method == 'GET':
+        ids = request.query_params.get('ids',  None)
+        if ids is not None:
+            ids = ids.split(',')
+            print(ids)
+        else:
+            return Response({'Nie podano parametru ids!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            accounts = Account.objects.filter(pk__in=ids)
+        except Account.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AccountNameSerializer(accounts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AccountListView(ListAPIView):
