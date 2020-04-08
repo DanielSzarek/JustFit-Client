@@ -59,7 +59,7 @@ def user_properties_view(request):
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAdminUser])
 @authentication_classes([BasicAuthentication])
-def account_retrieve_view(request, pk):
+def account_retrieve_update_view(request, pk):
     """
     This view will be used by admins to retrieve and change data
 
@@ -98,7 +98,6 @@ def accounts_retrieve_by_ids(request):
         ids = request.query_params.get('ids',  None)
         if ids is not None:
             ids = ids.split(',')
-            print(ids)
         else:
             return Response({'Nie podano parametru ids!'}, status=status.HTTP_400_BAD_REQUEST)
 
