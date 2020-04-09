@@ -14,3 +14,13 @@ class AccountSerializer(serializers.ModelSerializer):
             'last_name',
             'phone_number',
         )
+
+
+class AccountNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Account
+        fields = (
+            'id',
+            'first_name',
+        )
