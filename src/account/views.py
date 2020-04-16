@@ -58,7 +58,7 @@ def user_properties_view(request):
 
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAdminUser])
-@authentication_classes([BasicAuthentication])
+@authentication_classes([BasicAuthentication, TokenAuthentication])
 def account_retrieve_update_view(request, pk):
     """
     This view will be used by admins to retrieve and change data
@@ -118,7 +118,7 @@ class AccountListView(ListAPIView):
     """
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    authentication_classes(BasicAuthentication,)
+    authentication_classes(BasicAuthentication)
     permission_classes = (IsAdminUser,)
     filter_backends = (SearchFilter, OrderingFilter)
     pagination_class = PageNumberPagination

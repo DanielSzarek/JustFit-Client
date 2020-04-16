@@ -10,6 +10,9 @@ class ClientProduct(models.Model):
     add_date = models.DateTimeField(auto_now_add=True)
     mod_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = "Client Products"
+
     def __str__(self):
         return f"Product: {self.id_product} of user: {self.user}"
 
@@ -20,6 +23,9 @@ class ClientExercise(models.Model):
     active = models.BooleanField(default=True)
     add_date = models.DateTimeField(auto_now_add=True)
     mod_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Client Exercises"
 
     def __str__(self):
         return f"Exercise: {self.id_exercise} of user: {self.user}"
