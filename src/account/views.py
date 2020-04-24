@@ -6,11 +6,16 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 from .models import Account
 from .serializers import AccountSerializer, AccountNameSerializer
 
 
+@swagger_auto_schema(method='post', responses={
+    204: openapi.Response('response descriptSion'),
+}, tags=['token'])
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([TokenAuthentication])
@@ -27,6 +32,10 @@ def token_delete(request):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account'])
+@swagger_auto_schema(methods=['get'], responses={
+    200: openapi.Response('response description', AccountSerializer),
+}, tags=['account'])
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
@@ -56,6 +65,10 @@ def user_properties_view(request):
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
+@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account'])
+@swagger_auto_schema(methods=['get'], responses={
+    200: openapi.Response('response description', AccountSerializer),
+}, tags=['account'])
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAdminUser])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
@@ -84,6 +97,11 @@ def account_retrieve_update_view(request, pk):
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
+@swagger_auto_schema(methods=['get'], manual_parameters=[
+    openapi.Parameter('ids', openapi.IN_QUERY, "Account ids ex. ?ids=1,2,3", type=openapi.TYPE_STRING)],
+                     responses={
+    200: openapi.Response('response description', AccountSerializer)},
+                     tags=['account'])
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
@@ -95,7 +113,7 @@ def accounts_retrieve_by_ids(request):
     :return:
     """
     if request.method == 'GET':
-        ids = request.query_params.get('ids',  None)
+        ids = request.query_params.get('ids', None)
         if ids is not None:
             ids = ids.split(',')
         else:
