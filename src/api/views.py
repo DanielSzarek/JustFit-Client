@@ -34,10 +34,11 @@ def client_product_view(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        data = request.data
+        data = request.data.copy()
         # We check if someone from staff is using that method
-        if data['user'] is None and not request.user.is_staff and not request.user.is_superuser:
+        if not request.user.is_staff and not request.user.is_superuser:
             data['user'] = account.pk
+
         serializer = ClientProductSerializer(data=data)
         data_response = {}
         if serializer.is_valid():
@@ -72,7 +73,7 @@ def client_exercise_view(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        data = request.data
+        data = request.data.copy()
         # We check if someone from staff is using that method
         if not request.user.is_staff and not request.user.is_superuser:
             data['user'] = account.pk
