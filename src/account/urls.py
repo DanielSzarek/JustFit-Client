@@ -1,4 +1,6 @@
 from django.urls import path
+from drf_yasg.utils import swagger_auto_schema
+
 from .views import (
     token_delete,
     user_properties_view,
@@ -10,12 +12,24 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 app_name = 'account'
 
+decorated_search_view = \
+   swagger_auto_schema(
+        method='get',
+        tags=['account-admin']
+   )(AccountListView.as_view())
+
+decorated_token_view = \
+   swagger_auto_schema(
+        method='post',
+        tags=['account-token']
+   )(obtain_auth_token)
+
 urlpatterns = [
-    path('token/create/', obtain_auth_token, name='api_token_auth'),
+    path('token/create/', decorated_token_view, name='api_token_auth'),
     path('token/destroy/', token_delete, name='api_token_delete'),
 
     path('client/properties/', user_properties_view, name='properties'),
     path('properties/<int:pk>', account_retrieve_update_view, name="account"),
-    path('search/', AccountListView.as_view(), name="accounts"),
+    path('search/', decorated_search_view, name="accounts"),
     path('clients/', accounts_retrieve_by_ids, name="accounts")
 ]

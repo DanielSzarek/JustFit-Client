@@ -14,8 +14,8 @@ from .serializers import AccountSerializer, AccountNameSerializer
 
 
 @swagger_auto_schema(method='post', responses={
-    204: openapi.Response('response descriptSion'),
-}, tags=['token'])
+    204: openapi.Response('response description'),
+}, tags=['account-token'])
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([TokenAuthentication])
@@ -65,10 +65,10 @@ def user_properties_view(request):
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account'])
+@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account-admin'])
 @swagger_auto_schema(methods=['get'], responses={
     200: openapi.Response('response description', AccountSerializer),
-}, tags=['account'])
+}, tags=['account-admin'])
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAdminUser])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
@@ -141,3 +141,14 @@ class AccountListView(ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter)
     pagination_class = PageNumberPagination
     search_fields = ('email', 'username', 'first_name', 'last_name')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
