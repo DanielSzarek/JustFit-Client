@@ -1,4 +1,5 @@
 from django.urls import path
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from .views import (
@@ -21,8 +22,13 @@ decorated_search_view = \
 decorated_token_view = \
    swagger_auto_schema(
         method='post',
-        tags=['account-token']
-   )(obtain_auth_token)
+        tags=['account-token'],
+        manual_parameters=[
+            openapi.Parameter('username', openapi.IN_QUERY, "Account username", type=openapi.TYPE_STRING),
+            openapi.Parameter('password', openapi.IN_QUERY, "Account password", type=openapi.TYPE_STRING),
+        ],
+        operation_summary="Get auth token"
+    )(obtain_auth_token)
 
 urlpatterns = [
     path('token/create/', decorated_token_view, name='api_token_auth'),

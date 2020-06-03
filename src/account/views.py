@@ -32,10 +32,10 @@ def token_delete(request):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account'])
+@swagger_auto_schema(method='put', request_body=AccountSerializer, tags=['account-client'])
 @swagger_auto_schema(methods=['get'], responses={
     200: openapi.Response('response description', AccountSerializer),
-}, tags=['account'])
+}, tags=['account-client'])
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
@@ -101,7 +101,7 @@ def account_retrieve_update_view(request, pk):
     openapi.Parameter('ids', openapi.IN_QUERY, "Account ids ex. ?ids=1,2,3", type=openapi.TYPE_STRING)],
                      responses={
     200: openapi.Response('response description', AccountSerializer)},
-                     tags=['account'])
+                     tags=['account-client'])
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
