@@ -23,10 +23,13 @@ decorated_token_view = \
    swagger_auto_schema(
         method='post',
         tags=['account-token'],
-        manual_parameters=[
-            openapi.Parameter('username', openapi.IN_QUERY, "Account username", type=openapi.TYPE_STRING),
-            openapi.Parameter('password', openapi.IN_QUERY, "Account password", type=openapi.TYPE_STRING),
-        ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'username': openapi.Schema(type=openapi.TYPE_STRING, description='Account username'),
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Account password'),
+            }
+        ),
         operation_summary="Get auth token"
     )(obtain_auth_token)
 
