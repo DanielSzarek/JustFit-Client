@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ClientProduct, ClientExercise
+from .models import ClientProduct, ClientActivity
 
 
 class ClientProductSerializer(serializers.ModelSerializer):
@@ -29,28 +29,28 @@ class ClientProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"response": f"Nie podano wszystkich argumentów!"})
 
 
-class ClientExerciseSerializer(serializers.ModelSerializer):
+class ClientActivitySerializer(serializers.ModelSerializer):
     class Meta:
-        model = ClientExercise
+        model = ClientActivity
         fields = (
             'id',
             'user',
-            'id_exercise',
+            'id_activity',
             'active',
         )
 
     def save(self):
         try:
             user = self.validated_data['user']
-            id_exercise = self.validated_data['id_exercise']
+            id_activity = self.validated_data['id_activity']
             active = self.validated_data['active']
 
-            client_exercise = ClientExercise(
+            client_activity = ClientActivity(
                 user=user,
-                id_exercise=id_exercise,
+                id_activity=id_activity,
                 active=active,
             )
-            client_exercise.save()
-            return client_exercise
+            client_activity.save()
+            return client_activity
         except KeyError:
             raise serializers.ValidationError({"response": "Nie podano wszystkich argumentów!"})
