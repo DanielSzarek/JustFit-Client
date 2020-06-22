@@ -53,7 +53,11 @@ def user_properties_view(request):
 
     if request.method == 'GET':
         serializer = AccountSerializer(account)
-        return Response(serializer.data)
+        data = serializer.data
+        is_admin = {'is_admin': account.is_admin}
+        if account.is_admin:
+            data.update(is_admin)
+        return Response(data)
 
     if request.method == 'PUT':
         # Probably we will not need a PUT method for our small project
