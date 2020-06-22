@@ -9,7 +9,7 @@ Microservice of the whole "JustFit" system.
 
 ### Info
 ------------
-Is is our studies project, we try to connect many microservices into one system.
+It is our studies project, we try to connect many microservices into one system.
 
 You can check out other repositories, that are using my API: <br />
 Frontend Client: https://github.com/justyna-b/JustFit-WebUser <br />
